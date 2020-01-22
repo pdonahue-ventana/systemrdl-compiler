@@ -31,7 +31,8 @@ stages:
   # Only execute deployment stage on tagged release commits in the form of "v1.2.3"
   # and from your repository (e.g. not PRs).
   - name: deploy
-    if: repo = SystemRDL/systemrdl-compiler AND tag =~ ^v\d+\.\d+\.\d+$
+    #if: repo = SystemRDL/systemrdl-compiler AND tag =~ ^v\d+\.\d+\.\d+$
+    if: repo = SystemRDL/systemrdl-compiler
 
 jobs:
   include:
@@ -48,7 +49,7 @@ jobs:
       name: Deploy source distribution
       install: python -m pip install twine
       script: python setup.py sdist --formats=gztar
-      after_success: python -m twine upload --skip-existing dist/*.tar.gz
+      after_success: python -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/*.tar.gz
     
     # Deploy on linux
     - stage: deploy
@@ -56,7 +57,7 @@ jobs:
       services: docker
       install: python -m pip install twine cibuildwheel==1.1.0
       script: python -m cibuildwheel --output-dir wheelhouse
-      after_success: python -m twine upload --skip-existing wheelhouse/*.whl
+      after_success: python -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/*.whl
 
     # Deploy on mac
     - stage: deploy
@@ -65,7 +66,7 @@ jobs:
       language: shell
       install: python -m pip install twine cibuildwheel==1.1.0
       script: python -m cibuildwheel --output-dir wheelhouse
-      after_success: python -m twine upload --skip-existing wheelhouse/*.whl
+      after_success: python -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/*.whl
 
     # Deploy on windows
     - stage: deploy
@@ -74,7 +75,7 @@ jobs:
       language: shell
       install: python -m pip install twine cibuildwheel==1.1.0
       script: python -m cibuildwheel --output-dir wheelhouse
-      after_success: python -m twine upload --skip-existing wheelhouse/*.whl
+      after_success: python -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/*.whl
 
 env:
   global:
