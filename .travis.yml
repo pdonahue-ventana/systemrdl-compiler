@@ -5,16 +5,6 @@ python:
   - 3.7
   - 3.8
 
-before_install:
-  - |
-    if [[ "$TRAVIS_OS_NAME" = windows ]]; then
-        choco install python --version 3.5.4
-        choco install python --version 3.6.8
-        choco install python --version 3.7.6
-        choco install python --version 3.8.1
-        export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
-    fi
-
 install:
   - python -m pip install pytest pytest-cov python-coveralls coverage==4.5.4
 
@@ -75,6 +65,9 @@ jobs:
       name: Build and deploy Windows wheels
       os: windows
       language: shell
+      before_install:
+        - choco install python --version 3.8.1
+        - export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
       install: python -m pip install twine cibuildwheel==1.1.0
       script: python -m cibuildwheel --output-dir wheelhouse
       after_success: python -m twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing wheelhouse/*.whl
