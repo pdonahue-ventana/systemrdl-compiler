@@ -41,7 +41,7 @@ $pytest --cov=systemrdl --cov-append
 $coverage html -d $this_dir/htmlcov
 
 # Also run examples in order to make sure output is up-to-date
-$this_dir/../examples/print_hierarchy.py $this_dir/../examples/atxmega_spi.rdl > $this_dir/../docs/print_hierarchy_spi.stdout
+$python $this_dir/../examples/print_hierarchy.py $this_dir/../examples/atxmega_spi.rdl > $this_dir/../docs/print_hierarchy_spi.stdout
 
 # Run lint
 $pylint --rcfile $this_dir/pylint.rc systemrdl | tee $this_dir/lint.rpt
